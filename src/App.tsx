@@ -12,17 +12,17 @@ const CITIES: CityTile[] = [
   { name: "Hamburg", image: "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=1400&q=80" },
   { name: "New York", image: "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?auto=format&fit=crop&w=1400&q=80" },
   { name: "Shanghai", image: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=1400&q=80" },
-  { name: "Paris", image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1400&q=80" },
+  { name: "Paris", image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1400&q=80" },
   { name: "Milan", image: "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=1400&q=80" },
   { name: "Berlin", image: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1400&q=80" },
-  { name: "Seoul", image: "https://images.unsplash.com/photo-1505765050516-f72dcac9c60b?auto=format&fit=crop&w=1400&q=80" },
-  { name: "Dubai", image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1400&q=80" },
-  { name: "Singapore", image: "https://images.unsplash.com/photo-1473959383414-a1e0f111602e?auto=format&fit=crop&w=1400&q=80" },
+  { name: "Seoul", image: "https://source.unsplash.com/1600x1600/?seoul,city,night&sig=101" },
+  { name: "Dubai", image: "https://source.unsplash.com/1600x1600/?dubai,city,skyline&sig=102" },
+  { name: "Singapore", image: "https://source.unsplash.com/1600x1600/?singapore,city,skyline&sig=103" },
   { name: "Los Angeles", image: "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1400&q=80" },
   { name: "Madrid", image: "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&w=1400&q=80" },
   { name: "Vienna", image: "https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=1400&q=80" },
   { name: "Rome", image: "https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=1400&q=80" },
-  { name: "Barcelona", image: "https://images.unsplash.com/photo-1526481280695-3c4695d689f9?auto=format&fit=crop&w=1400&q=80" }
+  { name: "Barcelona", image: "https://source.unsplash.com/1600x1600/?barcelona,city,architecture&sig=104" }
 ];
 
 const CITY_BORDER_TEXT = CITIES.map((city) => city.name).join("   ");
