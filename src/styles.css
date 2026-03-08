@@ -228,6 +228,86 @@ body {
   overflow: hidden;
 }
 
+.story-border-marquee {
+  --frame-offset-y: clamp(18px, 4vh, 40px);
+  --frame-offset-x: clamp(14px, 3.2vw, 34px);
+  --border-band: clamp(22px, 2.4vw, 32px);
+  position: absolute;
+  left: var(--frame-offset-x);
+  right: var(--frame-offset-x);
+  top: var(--frame-offset-y);
+  bottom: var(--frame-offset-y);
+  border: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.story-border-segment {
+  position: absolute;
+  overflow: hidden;
+}
+
+.story-border-segment span {
+  position: absolute;
+  width: max-content;
+  white-space: nowrap;
+  font-family: "Questrial", "Montserrat", sans-serif;
+  font-size: clamp(0.78rem, 0.92vw, 0.94rem);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: rgba(17, 17, 17, 0.62);
+  line-height: 1;
+}
+
+.story-border-top {
+  left: 0;
+  top: 0;
+  height: var(--border-band);
+}
+
+.story-border-top span {
+  left: 0;
+  top: 3px;
+}
+
+.story-border-right {
+  right: 0;
+  top: 0;
+  width: var(--border-band);
+}
+
+.story-border-right span {
+  top: 0;
+  right: 3px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.story-border-bottom {
+  right: 0;
+  bottom: 0;
+  height: var(--border-band);
+}
+
+.story-border-bottom span {
+  left: 0;
+  bottom: 3px;
+}
+
+.story-border-left {
+  left: 0;
+  bottom: 0;
+  width: var(--border-band);
+}
+
+.story-border-left span {
+  left: 3px;
+  bottom: 0;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
 .story-cta {
   position: absolute;
   inset: 0;
@@ -332,5 +412,3 @@ body {
     border-top: 1px solid rgba(17, 17, 17, 0.45);
   }
 }
-
-

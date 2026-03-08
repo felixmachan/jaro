@@ -25,6 +25,9 @@ const CITIES: CityTile[] = [
   { name: "Barcelona", image: "https://images.unsplash.com/photo-1526481280695-3c4695d689f9?auto=format&fit=crop&w=1400&q=80" }
 ];
 
+const CITY_BORDER_TEXT = CITIES.map((city) => city.name).join("   ");
+const CITY_BORDER_LOOP = Array.from({ length: 16 }, () => CITY_BORDER_TEXT).join("   ");
+
 const clamp = (value: number, min = 0, max = 1): number => Math.max(min, Math.min(max, value));
 const map = (value: number, start: number, end: number): number => clamp((value - start) / (end - start));
 
@@ -106,6 +109,12 @@ export default function App() {
   const parallaxImageY = -parallaxMove * 20 - imageExit * 7;
   const parallaxWhiteY = 112 - parallaxMove * 112;
   const ctaY = parallaxWhiteY;
+  const borderFill = map(storyProgress, 0.02, 0.5);
+  const borderPerimeterFill = borderFill * 4;
+  const borderTopFill = clamp(borderPerimeterFill);
+  const borderRightFill = clamp(borderPerimeterFill - 1);
+  const borderBottomFill = clamp(borderPerimeterFill - 2);
+  const borderLeftFill = clamp(borderPerimeterFill - 3);
 
   return (
     <>
@@ -158,6 +167,21 @@ export default function App() {
 
       <section className="story-scroll" ref={storyRef}>
         <div className="story-stage">
+          <div className="story-border-marquee" aria-hidden="true" style={{ transform: `translateY(${linesOutY}vh)` }}>
+            <div className="story-border-segment story-border-top" style={{ width: `${borderTopFill * 100}%` }}>
+              <span>{CITY_BORDER_LOOP}</span>
+            </div>
+            <div className="story-border-segment story-border-right" style={{ height: `${borderRightFill * 100}%` }}>
+              <span>{CITY_BORDER_LOOP}</span>
+            </div>
+            <div className="story-border-segment story-border-bottom" style={{ width: `${borderBottomFill * 100}%` }}>
+              <span>{CITY_BORDER_LOOP}</span>
+            </div>
+            <div className="story-border-segment story-border-left" style={{ height: `${borderLeftFill * 100}%` }}>
+              <span>{CITY_BORDER_LOOP}</span>
+            </div>
+          </div>
+
           <div
             className="story-lines"
           >
