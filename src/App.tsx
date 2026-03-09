@@ -156,10 +156,9 @@ export default function App() {
   const gridInteractive = heroPhaseB >= 0.995 && heroPhaseC > 0 && heroPhaseD === 0;
 
   // STORY PHASES
-  const imageEnter = map(storyProgress, 0.42, 0.56);
-  const imagePlainScroll = map(storyProgress, 0.56, 0.72);
-  const parallaxMove = map(storyProgress, 0.56, 0.72);
-  const whitePanelIn = map(storyProgress, 0.72, 0.84);
+  const imageEnter = map(storyProgress, 0.56, 0.66);
+  const imagePlainScroll = map(storyProgress, 0.66, 0.8);
+  const whitePanelIn = map(storyProgress, 0.8, 0.88);
   const line1In = map(storyProgress, 0.14, 0.38);
   const line2In = map(storyProgress, 0.3, 0.56);
   const linesOut = map(storyProgress, 0.66, 0.9);
@@ -172,9 +171,9 @@ export default function App() {
 
   const parallaxStageY = (1 - imageEnter) * 105;
   const imageScrollY = storyImageOverflow * imagePlainScroll;
-  const parallaxImageY = -imageScrollY - parallaxMove * 4;
+  const parallaxImageY = -imageScrollY;
   const parallaxWhiteY = 112 - whitePanelIn * 112;
-  const blackCoverIn = map(storyProgress, 0.92, 1.0);
+  const blackCoverIn = map(storyProgress, 0.93, 1.0);
   const storyBlackCoverY = 100 - blackCoverIn * 100;
   const blackFormInteractive = blackCoverIn >= 0.94;
   const formFullyInView = blackCoverIn >= 0.995;
@@ -327,7 +326,7 @@ export default function App() {
           <div
             className="story-parallax"
             style={{
-              transform: `translateY(${parallaxStageY}%)`
+              transform: `translateY(${parallaxStageY}vh)`
             }}
           >
             <img
@@ -349,7 +348,7 @@ export default function App() {
           <div
             className="story-black-cover"
             style={{
-              transform: `translateY(calc(${storyBlackCoverY}% - 1px))`,
+              transform: `translateY(${storyBlackCoverY}%)`,
               pointerEvents: blackFormInteractive ? "auto" : "none"
             }}
           >
