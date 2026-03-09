@@ -44,12 +44,16 @@ const getNextMayFirstMs = (nowMs: number): number => {
   return target.getTime();
 };
 
-const getCountdownParts = (targetMs: number, nowMs: number): { days: number; hours: number; seconds: number } => {
+const getCountdownParts = (
+  targetMs: number,
+  nowMs: number
+): { days: number; hours: number; minutes: number; seconds: number } => {
   const remaining = Math.max(targetMs - nowMs, 0);
   const days = Math.floor(remaining / DAY_MS);
   const hours = Math.floor((remaining % DAY_MS) / HOUR_MS);
+  const minutes = Math.floor((remaining % HOUR_MS) / MINUTE_MS);
   const seconds = Math.floor((remaining % MINUTE_MS) / SECOND_MS);
-  return { days, hours, seconds };
+  return { days, hours, minutes, seconds };
 };
 
 const getSectionProgress = (section: HTMLElement | null): number => {
@@ -62,10 +66,12 @@ const getSectionProgress = (section: HTMLElement | null): number => {
 export default function App() {
   const heroRef = useRef<HTMLElement | null>(null);
   const storyRef = useRef<HTMLElement | null>(null);
+  const storyImageRef = useRef<HTMLImageElement | null>(null);
 
   const [heroProgress, setHeroProgress] = useState(0);
   const [storyProgress, setStoryProgress] = useState(0);
   const [nowMs, setNowMs] = useState(() => Date.now());
+  const [storyImageOverflow, setStoryImageOverflow] = useState(0);
 
   useEffect(() => {
     let rafId = 0;
@@ -104,6 +110,30 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const updateStoryImageOverflow = () => {
+      const imageHeight = storyImageRef.current?.offsetHeight ?? 0;
+      const viewportHeight = window.innerHeight;
+      setStoryImageOverflow(Math.max(imageHeight - viewportHeight, 0));
+    };
+
+    updateStoryImageOverflow();
+    window.addEventListener("resize", updateStoryImageOverflow);
+
+    const imageEl = storyImageRef.current;
+    const needsLoadListener = Boolean(imageEl && !imageEl.complete);
+    if (needsLoadListener && imageEl) {
+      imageEl.addEventListener("load", updateStoryImageOverflow);
+    }
+
+    return () => {
+      window.removeEventListener("resize", updateStoryImageOverflow);
+      if (needsLoadListener && imageEl) {
+        imageEl.removeEventListener("load", updateStoryImageOverflow);
+      }
+    };
+  }, []);
+
   // HERO PHASES
   const heroPhaseA = map(heroProgress, 0.0, 0.24);
   const heroPhaseB = map(heroProgress, 0.24, 0.52);
@@ -123,11 +153,10 @@ export default function App() {
   const gridInteractive = heroPhaseB >= 0.995 && heroPhaseC > 0 && heroPhaseD === 0;
 
   // STORY PHASES
-  const imageEnter = map(storyProgress, 0.5, 0.72);
-  const imagePlainScroll = map(storyProgress, 0.72, 0.94);
-  const parallaxMove = map(storyProgress, 0.76, 0.99);
+  const imageEnter = map(storyProgress, 0.42, 0.56);
+  const imagePlainScroll = map(storyProgress, 0.56, 0.72);
+  const parallaxMove = map(storyProgress, 0.56, 0.72);
   const whitePanelIn = map(storyProgress, 0.72, 0.84);
-  const imageExit = map(storyProgress, 0.94, 1.0);
   const line1In = map(storyProgress, 0.14, 0.38);
   const line2In = map(storyProgress, 0.3, 0.56);
   const linesOut = map(storyProgress, 0.66, 0.9);
@@ -138,12 +167,13 @@ export default function App() {
   const line2X = (1 - line2In) * 118;
   const linesOutY = linesOut * -125;
 
-  const parallaxStageY = (1 - imageEnter) * 105 - imagePlainScroll * 26 - imageExit * 8;
-  const parallaxImageY = -parallaxMove * 20 - imageExit * 7;
+  const parallaxStageY = (1 - imageEnter) * 105;
+  const imageScrollY = storyImageOverflow * imagePlainScroll;
+  const parallaxImageY = -imageScrollY - parallaxMove * 4;
   const parallaxWhiteY = 112 - whitePanelIn * 112;
-  const blackCoverIn = map(storyProgress, 0.93, 1.0);
+  const blackCoverIn = map(storyProgress, 0.92, 1.0);
   const storyBlackCoverY = 100 - blackCoverIn * 100;
-  const blackFormInteractive = blackCoverIn >= 0.98;
+  const blackFormInteractive = blackCoverIn >= 0.94;
   const borderFill = map(storyProgress, 0.02, 0.5);
   const borderPerimeterFill = borderFill * 4;
   const borderTopFill = clamp(borderPerimeterFill);
@@ -156,7 +186,9 @@ export default function App() {
   const countdown = getCountdownParts(countdownTargetMs, nowMs);
   const countdownValue = `${countdown.days.toString().padStart(2, "0")}:${countdown.hours
     .toString()
-    .padStart(2, "0")}:${countdown.seconds.toString().padStart(2, "0")}`;
+    .padStart(2, "0")}:${countdown.minutes.toString().padStart(2, "0")}:${countdown.seconds
+    .toString()
+    .padStart(2, "0")}`;
 
   return (
     <>
@@ -255,6 +287,7 @@ export default function App() {
             }}
           >
             <img
+              ref={storyImageRef}
               className="story-parallax-image"
               src={secretArtImage}
               alt="The secret art of sunglasses"
@@ -266,13 +299,13 @@ export default function App() {
           <div className="story-countdown" style={{ transform: `translateY(${parallaxWhiteY}%)` }}>
             <p className="countdown-kicker">Countdown to May 1, {countdownTargetYear}</p>
             <p className="countdown-value">{countdownValue}</p>
-            <p className="countdown-units">DAY : HOUR : SECOND</p>
+            <p className="countdown-units">DAY : HOUR : MINUTE : SECOND</p>
           </div>
 
           <div
             className="story-black-cover"
             style={{
-              transform: `translateY(${storyBlackCoverY}%)`,
+              transform: `translateY(calc(${storyBlackCoverY}% - 1px))`,
               pointerEvents: blackFormInteractive ? "auto" : "none"
             }}
           >
