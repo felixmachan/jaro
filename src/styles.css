@@ -194,17 +194,18 @@ body {
 }
 
 .story-line {
-  width: max-content;
-  max-width: none;
+  width: min(94vw, 48ch);
+  max-width: 94vw;
   text-align: center;
   font-family: "Questrial", "Montserrat", sans-serif;
-  font-size: clamp(1.65rem, 5.05vw, 5.7rem);
+  font-size: clamp(1.45rem, 3.45vw, 4.3rem);
   font-weight: 400;
   letter-spacing: 0.03em;
-  line-height: 1.04;
+  line-height: 1.08;
   text-transform: uppercase;
   color: var(--text-dark);
-  white-space: nowrap;
+  white-space: normal;
+  text-wrap: balance;
   padding-inline: clamp(8px, 1.2vw, 16px);
   will-change: transform, opacity;
 }
