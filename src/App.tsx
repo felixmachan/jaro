@@ -152,7 +152,7 @@ export default function App() {
   const imageBlur = 7 - heroPhaseB * 7;
   const imageScale = 0.9 + heroPhaseB * 0.1;
 
-  const hintOpacity = 1 - map(heroProgress, 0.68, 0.9);
+  const hintOpacity = 1 - heroPhaseB;
   const gridInteractive = heroPhaseB >= 0.995 && heroPhaseC > 0 && heroPhaseD === 0;
 
   // STORY PHASES
