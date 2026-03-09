@@ -15,14 +15,14 @@ const CITIES: CityTile[] = [
   { name: "Paris", image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1400&q=80" },
   { name: "Milan", image: "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=1400&q=80" },
   { name: "Berlin", image: "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1400&q=80" },
-  { name: "Seoul", image: "https://source.unsplash.com/1600x1600/?seoul,city,night&sig=101" },
-  { name: "Dubai", image: "https://source.unsplash.com/1600x1600/?dubai,city,skyline&sig=102" },
-  { name: "Singapore", image: "https://source.unsplash.com/1600x1600/?singapore,city,skyline&sig=103" },
+  { name: "Seoul", image: "https://images.pexels.com/photos/35774327/pexels-photo-35774327.jpeg?auto=compress&cs=tinysrgb&w=1400&h=1400&dpr=1" },
+  { name: "Dubai", image: "https://images.pexels.com/photos/31824217/pexels-photo-31824217.jpeg?auto=compress&cs=tinysrgb&w=1400&h=1400&dpr=1" },
+  { name: "Singapore", image: "https://images.pexels.com/photos/29875431/pexels-photo-29875431.jpeg?auto=compress&cs=tinysrgb&w=1400&h=1400&dpr=1" },
   { name: "Los Angeles", image: "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1400&q=80" },
   { name: "Madrid", image: "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&w=1400&q=80" },
   { name: "Vienna", image: "https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=1400&q=80" },
   { name: "Rome", image: "https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=1400&q=80" },
-  { name: "Barcelona", image: "https://source.unsplash.com/1600x1600/?barcelona,city,architecture&sig=104" }
+  { name: "Barcelona", image: "https://images.pexels.com/photos/29304661/pexels-photo-29304661.jpeg?auto=compress&cs=tinysrgb&w=1400&h=1400&dpr=1" }
 ];
 
 const CITY_BORDER_TEXT = CITIES.map((city) => city.name).join("   ");
