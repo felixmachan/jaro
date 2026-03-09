@@ -226,7 +226,8 @@ body {
   right: 0;
   top: 0;
   width: 100vw;
-  height: auto;
+  height: 100vh;
+  height: 100dvh;
   z-index: 9;
   overflow: hidden;
   border: 0;
@@ -236,7 +237,9 @@ body {
 
 .story-parallax-image {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   display: block;
   will-change: transform;
   pointer-events: none;
@@ -247,7 +250,8 @@ body {
   left: 0;
   right: 0;
   top: 0;
-  height: 112%;
+  height: 100vh;
+  height: 100dvh;
   background: var(--bg-light);
   will-change: transform;
   display: block;
@@ -335,12 +339,13 @@ body {
   text-orientation: mixed;
 }
 
-.story-cta {
+.story-countdown {
   position: absolute;
   inset: 0;
   z-index: 12;
   width: 100%;
-  padding: clamp(18px, 6vh, 44px) clamp(12px, 3vw, 30px);
+  height: 100%;
+  padding: 0 clamp(12px, 3vw, 30px);
   display: grid;
   place-content: center;
   place-items: center;
@@ -348,9 +353,77 @@ body {
   text-align: center;
   color: var(--text-dark);
   will-change: transform;
+  pointer-events: none;
 }
 
-.story-cta h3 {
+.story-black-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 13;
+  background: var(--bg-dark);
+  will-change: transform;
+  pointer-events: none;
+}
+
+.countdown-kicker {
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(0.72rem, 1vw, 0.92rem);
+  font-weight: 300;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(17, 17, 17, 0.62);
+}
+
+.countdown-value {
+  font-family: "Questrial", "Montserrat", sans-serif;
+  font-size: clamp(2.5rem, 12.4vw, 10.2rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: var(--text-dark);
+}
+
+.countdown-units {
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(0.66rem, 0.9vw, 0.82rem);
+  font-weight: 300;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(17, 17, 17, 0.54);
+}
+
+.join-scroll {
+  position: relative;
+  height: 100vh;
+  background: var(--bg-dark);
+}
+
+.join-stage {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+.join-cta {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  width: 100%;
+  padding: clamp(18px, 6vh, 44px) clamp(12px, 3vw, 30px);
+  display: grid;
+  place-content: center;
+  place-items: center;
+  gap: clamp(16px, 3vh, 24px);
+  text-align: center;
+  color: var(--text-light);
+  will-change: transform;
+}
+
+.join-cta h3 {
   width: min(92vw, 920px);
   font-family: "Questrial", "Montserrat", sans-serif;
   font-size: clamp(1.7rem, 3.9vw, 3.2rem);
@@ -358,6 +431,7 @@ body {
   letter-spacing: 0.07em;
   line-height: 1.08;
   text-transform: uppercase;
+  color: var(--text-light);
 }
 
 .cta-form {
@@ -403,6 +477,29 @@ body {
   color: #fff;
 }
 
+.cta-form-inverse {
+  border: 1px solid rgba(243, 243, 241, 0.45);
+  background: rgba(7, 7, 7, 0.72);
+}
+
+.cta-form-inverse input {
+  color: var(--text-light);
+}
+
+.cta-form-inverse input::placeholder {
+  color: rgba(243, 243, 241, 0.58);
+}
+
+.cta-form-inverse button {
+  border-left-color: rgba(243, 243, 241, 0.45);
+  color: var(--text-light);
+}
+
+.cta-form-inverse button:hover {
+  background: var(--text-light);
+  color: #070707;
+}
+
 @media (max-width: 900px) {
   .city-grid {
     width: min(94vw, 94vh);
@@ -425,7 +522,11 @@ body {
     padding-inline: 1.4vw;
   }
 
-  .story-cta h3 {
+  .countdown-value {
+    font-size: clamp(2.05rem, 17vw, 5.6rem);
+  }
+
+  .join-cta h3 {
     font-size: clamp(1.6rem, 8.2vw, 2.6rem);
   }
 
@@ -437,5 +538,9 @@ body {
     width: 100%;
     border-left: 0;
     border-top: 1px solid rgba(17, 17, 17, 0.45);
+  }
+
+  .cta-form-inverse button {
+    border-top-color: rgba(243, 243, 241, 0.45);
   }
 }

@@ -30,6 +30,27 @@ const CITY_BORDER_LOOP = Array.from({ length: 16 }, () => CITY_BORDER_TEXT).join
 
 const clamp = (value: number, min = 0, max = 1): number => Math.max(min, Math.min(max, value));
 const map = (value: number, start: number, end: number): number => clamp((value - start) / (end - start));
+const SECOND_MS = 1000;
+const MINUTE_MS = 60 * SECOND_MS;
+const HOUR_MS = 60 * MINUTE_MS;
+const DAY_MS = 24 * HOUR_MS;
+
+const getNextMayFirstMs = (nowMs: number): number => {
+  const now = new Date(nowMs);
+  let target = new Date(now.getFullYear(), 4, 1, 0, 0, 0, 0);
+  if (nowMs >= target.getTime()) {
+    target = new Date(now.getFullYear() + 1, 4, 1, 0, 0, 0, 0);
+  }
+  return target.getTime();
+};
+
+const getCountdownParts = (targetMs: number, nowMs: number): { days: number; hours: number; seconds: number } => {
+  const remaining = Math.max(targetMs - nowMs, 0);
+  const days = Math.floor(remaining / DAY_MS);
+  const hours = Math.floor((remaining % DAY_MS) / HOUR_MS);
+  const seconds = Math.floor((remaining % MINUTE_MS) / SECOND_MS);
+  return { days, hours, seconds };
+};
 
 const getSectionProgress = (section: HTMLElement | null): number => {
   if (!section) return 0;
@@ -44,6 +65,7 @@ export default function App() {
 
   const [heroProgress, setHeroProgress] = useState(0);
   const [storyProgress, setStoryProgress] = useState(0);
+  const [nowMs, setNowMs] = useState(() => Date.now());
 
   useEffect(() => {
     let rafId = 0;
@@ -72,6 +94,16 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setNowMs(Date.now());
+    }, 1000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, []);
+
   // HERO PHASES
   const heroPhaseA = map(heroProgress, 0.0, 0.24);
   const heroPhaseB = map(heroProgress, 0.24, 0.52);
@@ -94,6 +126,7 @@ export default function App() {
   const imageEnter = map(storyProgress, 0.5, 0.72);
   const imagePlainScroll = map(storyProgress, 0.72, 0.94);
   const parallaxMove = map(storyProgress, 0.76, 0.99);
+  const whitePanelIn = map(storyProgress, 0.72, 0.84);
   const imageExit = map(storyProgress, 0.94, 1.0);
   const line1In = map(storyProgress, 0.14, 0.38);
   const line2In = map(storyProgress, 0.3, 0.56);
@@ -107,14 +140,23 @@ export default function App() {
 
   const parallaxStageY = (1 - imageEnter) * 105 - imagePlainScroll * 26 - imageExit * 8;
   const parallaxImageY = -parallaxMove * 20 - imageExit * 7;
-  const parallaxWhiteY = 112 - parallaxMove * 112;
-  const ctaY = parallaxWhiteY;
+  const parallaxWhiteY = 112 - whitePanelIn * 112;
+  const blackCoverIn = map(storyProgress, 0.93, 1.0);
+  const storyBlackCoverY = 100 - blackCoverIn * 100;
+  const blackFormInteractive = blackCoverIn >= 0.98;
   const borderFill = map(storyProgress, 0.02, 0.5);
   const borderPerimeterFill = borderFill * 4;
   const borderTopFill = clamp(borderPerimeterFill);
   const borderRightFill = clamp(borderPerimeterFill - 1);
   const borderBottomFill = clamp(borderPerimeterFill - 2);
   const borderLeftFill = clamp(borderPerimeterFill - 3);
+
+  const countdownTargetMs = getNextMayFirstMs(nowMs);
+  const countdownTargetYear = new Date(countdownTargetMs).getFullYear();
+  const countdown = getCountdownParts(countdownTargetMs, nowMs);
+  const countdownValue = `${countdown.days.toString().padStart(2, "0")}:${countdown.hours
+    .toString()
+    .padStart(2, "0")}:${countdown.seconds.toString().padStart(2, "0")}`;
 
   return (
     <>
@@ -221,18 +263,26 @@ export default function App() {
             <div className="story-parallax-white" style={{ transform: `translateY(${parallaxWhiteY}%)` }} />
           </div>
 
+          <div className="story-countdown" style={{ transform: `translateY(${parallaxWhiteY}%)` }}>
+            <p className="countdown-kicker">Countdown to May 1, {countdownTargetYear}</p>
+            <p className="countdown-value">{countdownValue}</p>
+            <p className="countdown-units">DAY : HOUR : SECOND</p>
+          </div>
+
           <div
-            className="story-cta"
+            className="story-black-cover"
             style={{
-              transform: `translateY(${ctaY}vh)`,
-              pointerEvents: ctaY <= 4 ? "auto" : "none"
+              transform: `translateY(${storyBlackCoverY}%)`,
+              pointerEvents: blackFormInteractive ? "auto" : "none"
             }}
           >
-            <h3>Do you want to be one of the first 1000 owners?</h3>
-            <form className="cta-form" onSubmit={(event) => event.preventDefault()}>
-              <input type="email" placeholder="Register here with your email" required />
-              <button type="submit">Register</button>
-            </form>
+            <div className="join-cta">
+              <h3>Do you want to be one of the first 1000 owners?</h3>
+              <form className="cta-form cta-form-inverse" onSubmit={(event) => event.preventDefault()}>
+                <input type="email" placeholder="Register here with your email" required />
+                <button type="submit">Register</button>
+              </form>
+            </div>
           </div>
         </div>
       </section>
