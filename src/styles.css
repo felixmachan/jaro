@@ -438,6 +438,16 @@ body {
   color: var(--text-light);
 }
 
+.owners-counter {
+  font-family: "Questrial", "Montserrat", sans-serif;
+  font-size: clamp(1.2rem, 2.4vw, 2rem);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(243, 243, 241, 0.86);
+  margin-top: clamp(8px, 1.8vh, 18px);
+}
+
 .cta-form {
   width: min(92vw, 620px);
   display: flex;

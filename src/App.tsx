@@ -67,11 +67,14 @@ export default function App() {
   const heroRef = useRef<HTMLElement | null>(null);
   const storyRef = useRef<HTMLElement | null>(null);
   const storyImageRef = useRef<HTMLImageElement | null>(null);
+  const ownersCounterRafRef = useRef(0);
+  const ownersCounterStartedRef = useRef(false);
 
   const [heroProgress, setHeroProgress] = useState(0);
   const [storyProgress, setStoryProgress] = useState(0);
   const [nowMs, setNowMs] = useState(() => Date.now());
   const [storyImageOverflow, setStoryImageOverflow] = useState(0);
+  const [ownersCount, setOwnersCount] = useState(0);
 
   useEffect(() => {
     let rafId = 0;
@@ -174,6 +177,7 @@ export default function App() {
   const blackCoverIn = map(storyProgress, 0.92, 1.0);
   const storyBlackCoverY = 100 - blackCoverIn * 100;
   const blackFormInteractive = blackCoverIn >= 0.94;
+  const formFullyInView = blackCoverIn >= 0.995;
   const borderFill = map(storyProgress, 0.02, 0.5);
   const borderPerimeterFill = borderFill * 4;
   const borderTopFill = clamp(borderPerimeterFill);
@@ -189,6 +193,46 @@ export default function App() {
     .padStart(2, "0")}:${countdown.minutes.toString().padStart(2, "0")}:${countdown.seconds
     .toString()
     .padStart(2, "0")}`;
+
+  useEffect(() => {
+    if (!formFullyInView) {
+      if (ownersCounterRafRef.current !== 0) {
+        window.cancelAnimationFrame(ownersCounterRafRef.current);
+        ownersCounterRafRef.current = 0;
+      }
+      ownersCounterStartedRef.current = false;
+      setOwnersCount(0);
+      return;
+    }
+
+    if (ownersCounterStartedRef.current) return;
+    ownersCounterStartedRef.current = true;
+
+    const durationMs = 4000;
+    const targetCount = 32;
+    const startMs = performance.now();
+
+    const tick = (now: number) => {
+      const progress = clamp((now - startMs) / durationMs);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setOwnersCount(Math.round(targetCount * eased));
+
+      if (progress < 1) {
+        ownersCounterRafRef.current = window.requestAnimationFrame(tick);
+      } else {
+        ownersCounterRafRef.current = 0;
+      }
+    };
+
+    ownersCounterRafRef.current = window.requestAnimationFrame(tick);
+
+    return () => {
+      if (ownersCounterRafRef.current !== 0) {
+        window.cancelAnimationFrame(ownersCounterRafRef.current);
+        ownersCounterRafRef.current = 0;
+      }
+    };
+  }, [formFullyInView]);
 
   return (
     <>
@@ -315,6 +359,9 @@ export default function App() {
                 <input type="email" placeholder="Register here with your email" required />
                 <button type="submit">Register</button>
               </form>
+              <p className="owners-counter">
+                {ownersCount}/1000
+              </p>
             </div>
           </div>
         </div>
