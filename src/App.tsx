@@ -34,6 +34,8 @@ const SECOND_MS = 1000;
 const MINUTE_MS = 60 * SECOND_MS;
 const HOUR_MS = 60 * MINUTE_MS;
 const DAY_MS = 24 * HOUR_MS;
+const STORY_IMAGE_ENTER_START = 0.6;
+const STORY_IMAGE_ENTER_END = 0.7;
 
 const getNextMayFirstMs = (nowMs: number): number => {
   const now = new Date(nowMs);
@@ -156,7 +158,7 @@ export default function App() {
   const gridInteractive = heroPhaseB >= 0.995 && heroPhaseC > 0 && heroPhaseD === 0;
 
   // STORY PHASES
-  const imageEnter = map(storyProgress, 0.6, 0.7);
+  const imageEnter = map(storyProgress, STORY_IMAGE_ENTER_START, STORY_IMAGE_ENTER_END);
   const imagePlainScroll = map(storyProgress, 0.7, 0.8);
   const whitePanelIn = map(storyProgress, 0.8, 0.88);
   const line1In = map(storyProgress, 0.14, 0.38);
@@ -177,7 +179,7 @@ export default function App() {
   const storyBlackCoverY = 100 - blackCoverIn * 100;
   const blackFormInteractive = blackCoverIn >= 0.94;
   const formFullyInView = blackCoverIn >= 0.995;
-  const borderFill = map(storyProgress, 0.02, 0.5);
+  const borderFill = map(storyProgress, 0.02, STORY_IMAGE_ENTER_START);
   const borderPerimeterFill = borderFill * 4;
   const borderTopFill = clamp(borderPerimeterFill);
   const borderRightFill = clamp(borderPerimeterFill - 1);
