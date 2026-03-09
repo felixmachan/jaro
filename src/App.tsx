@@ -156,8 +156,8 @@ export default function App() {
   const gridInteractive = heroPhaseB >= 0.995 && heroPhaseC > 0 && heroPhaseD === 0;
 
   // STORY PHASES
-  const imageEnter = map(storyProgress, 0.56, 0.66);
-  const imagePlainScroll = map(storyProgress, 0.66, 0.8);
+  const imageEnter = map(storyProgress, 0.6, 0.7);
+  const imagePlainScroll = map(storyProgress, 0.7, 0.8);
   const whitePanelIn = map(storyProgress, 0.8, 0.88);
   const line1In = map(storyProgress, 0.14, 0.38);
   const line2In = map(storyProgress, 0.3, 0.56);
